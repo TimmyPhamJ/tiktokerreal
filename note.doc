@@ -1,0 +1,61 @@
+const { useBabelRc } = require("customize-cra")
+
+1. cài đặt customize-cra
+npm i customize-cra react-app-rewired -D
+đổi trong package.json
+/*
+"scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
+  },
+*/
+2. Tạo file config-overrides.js ngoài dự án gốc copy đoạn dưới vào file.
+
+/* config-overrides.js 
+module.exports = function override(config, env) {
+    //do stuff with the webpack config...
+    return config;
+};
+*/
+
+3. Cài đặt babel-plugin-module-resolver: npm install --save-dev babel-plugin-module-resolver
+Tạo 1 file .babelrc tại thư mục gốc
+/*
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "~": "./src"
+        }
+      }
+    ]
+  ]
+}
+
+ */
+
+ 4. Taoj 1 file jsconfig.json có nội dung:
+ /*
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  }
+}
+
+ */
+
+5. tìm customize-cra babel sau đó tìm tới tab useBabelRc. sau đó vào file config-overrides.js làm theo cú pháp sau:
+/*
+const { override,useBabelRc } = require("customize-cra");
+
+module.exports = override(
+    useBabelRc()
+);
+ */
