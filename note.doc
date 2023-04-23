@@ -19,7 +19,7 @@ module.exports = function override(config, env) {
     return config;
 };
 */
-
+_________________________
 3. Cài đặt babel-plugin-module-resolver: npm install --save-dev babel-plugin-module-resolver
 Tạo 1 file .babelrc tại thư mục gốc
 /*
@@ -59,3 +59,235 @@ module.exports = override(
     useBabelRc()
 );
  */
+ ______________________________
+ CÀI ĐẶT VÀ CẤU HÌNH PRETTIER: Giúp format các file code HTML,CSS,JS,...giúp code trở nên gọn gàn hơn và ngay ngắn hơn 
+ 1. thêm 1 file cấu hình .prettierrc  vào thu mục gốc:
+ /*
+{
+    "arrowParens": "always",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "embeddedLanguageFormatting": "auto",
+    "htmlWhitespaceSensitivity": "css",
+    "insertPragma": false,
+    "jsxSingleQuote": false,
+    "printWidth": 120,
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "useTabs": false,
+    "vueIndentScriptAndStyle": false
+}
+ */
+ 2. tạo file .vscode/settings.json
+ /*
+ {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
+ */
+ ______________________________
+ CẤU HÌNH VÀ SỬ DỤNG CSS/SASS
+
+ 1. Tạo GlobalStyle component
+ tạo file index. js và GlobalStyle.scss
+ sau do import GlobalStyle vào file index.js ngoài src và app = <GlobalStyle> </GlobalStyle> bằng cách bôi den APP ctrl + p chọn wrap enter rồi nhạp then GlobalStyle và enter là ok 
+
+ 2. Cài thư viện SASS: 'npm i -D sass'
+
+ 3. Reset CSS
+ dùng thư viện reset css normalize npm trên google
+ "npm install --save normalize.css"
+
+ 4. Default CSS: font-family, font-size,line-height
+
+ BỔ SUNG THUỘC TÍNH CSS
+
+ 1. Mở file GlobalStyle lên. Thêm * {box-sizing = border-box} 
+ 
+ _________________________________
+
+ CẤU HÌNH ROUTER/LAYOUT CHO DỰ ÁN
+
+  1. Phân tịch tổng quan LAYOUT
+
+
+
+  2. Cài đặt React-router-dom: npm i react-router-dom
+
+
+
+  3. Đưa cấu hình router ra ngoài
+import {BrowserRouter as Router} from 'react-router-dom'; vào file App.js. add trang home và following vào
+/*
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from '~/pages/Home';
+import Following from '~/pages/Following';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/following" element={<Following />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+*/
+
+taọ thư mục routers có index.js:
+/*
+const publicRoutes =[
+dùng cho những router không cần đăng nhập vẫn xem được
+]
+
+const privateRoutes =[
+    phải đang nhập mới xem được nếu không đăng nhập sẽ lái sang trang login
+]
+
+export{publicRoutes,privateRoutes}
+*/
+
+Chuyển import hom và foloowing sang traing index.js của routes sau đó làm như sau:
+
+*/
+
+taọ thư mục routers có index.js:
+/*
+import Home from '~/pages/Home';
+import Following from '~/pages/Following';
+
+const publicRoutes = [
+  { path: '/', component: Home },
+  { path: '/following', component: Following },
+];
+
+const privateRoutes = [];
+
+export { publicRoutes, privateRoutes };
+
+*/
+
+chuyển sang trang App.js đổi lại như sau:
+
+/*
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { publicRoutes } from '~/routes';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Routes>
+          {publicRoutes.map((route) => {
+            return <Route />;
+          })}
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+*/
+
+Sau này nếu có thêm 1 trang khác vào thì vào pages tạo thêm 1 trang. sau đó vào routes nạp trang mới vào 
+
+  4. Xây dựng cơ chế tải layout 
+
+  tại thư mục component tạo 1 thư mục tên là Layout tạo trong thư mục Layout 1 thư mục khác là DefaultLayout và trong thư mục đó tạo 1 index.js. 
+  Thư mục Layout này sau này có thể thêm các layout khác thì chứa chung với thư mục default. 
+  Trong defaultlayout thì chỉ thiết kế các nội dung đứng yên và khoogn di chuyển dù là có chuyển trang gọi là layout cố định.
+  Tại DefaultLayout tạo thư mục Header và thêm 1 file index.js trong đó sau đó nhân lên các mục cần làm như header, sidebar, footer,...
+  tại index.js của defaultlayout import ra:
+  /*
+  import Header from './Header';
+import Sidebar from './Sidebar';
+
+function DefaultLayout({ children }) {
+  return (
+    <div>
+      <Header />
+      <div className="container">
+        <Sidebar />
+        <div className="content">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+export default DefaultLayout;
+  */
+
+  tại thư mục layout tạo 1 file index.js
+
+  /*
+export {default as DefaultLayout} form './DefaultLayout'
+  */
+
+  sang file APP.js import layout vào:
+  /*
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { publicRoutes } from '~/routes';
+import { DefaultLayout } from '~/components/Layout';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Routes>
+          {publicRoutes.map((route, index) => {
+            const Layout = route.layout || DefaultLayout;
+            const Page = route.component;
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+  */
+
+nếu tại index.js của route mà không chỉ định layout:
+/*
+import Home from '~/pages/Home';
+import Following from '~/pages/Following';
+import Profile from '~/pages/Profile';
+
+const publicRoutes = [
+  { path: '/', component: Home }, mạc định là DefaultLayout
+  { path: '/following', component: Following }, mạc định là DefaultLayout
+  { path: '/profile', component: Profile, nếu (layout: )},
+];
+
+const privateRoutes = [];
+
+export { publicRoutes, privateRoutes };
+
+*/
+
+đối voái các trang 1 mình  1 layout chúng ta sẽ k để DefaultLayout ăn vào layout đó
+
