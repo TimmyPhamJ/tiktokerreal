@@ -494,3 +494,149 @@ function DefaultLayout({ children }) {
 
 export default DefaultLayout;
 */
+
+____________________________________
+
+DỰNG KHUNG LAYOUT MẶC ĐỊNH
+
+Vào component/Layout/components/Header tạo file Header.module.scss
+Sau đó import vào index.js của Header.
+
+đi cài thư viện classnames: npm i classnames.
+sau đó import classnames vào trong index.js của Header:
+
+trong index.js của Header
+/*
+import classNames from 'classnames/bind';
+
+import styles from './Header.module.scss';
+
+const cx = classNames.bind(styles);
+
+function Header() {
+  return (
+    <header className={cx('wrapper')}>
+      <div className={cx('inner')}></div>
+    </header>
+  );
+}
+
+export default Header;
+
+
+*/
+
+trong Header.module.scss
+/*
+.wrapper {
+  width: 100%;
+  height: 60px;
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  height: 100%;
+  width: 1150px;
+  background-color: #ccc;
+}
+
+
+*/
+
+sang GlobalStyles.scss:
+/*
+@import 'normalize.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #fe2c55;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Mitr', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed; //tối ưu để hiển thị font nhanh nhất
+}
+
+*/
+
+vào DefaultLayout tạo file DefaultLayout.module.scss 
+
+chỉnh trong index.js - DefaultLayout:
+/*
+import classNames from 'classnames/bind';
+
+import Header from '~/components/Layout/components/Header';
+import styles from './DefaultLayout.module.scss';
+import Sidebar from './Sidebar';
+
+const cx = classNames.bind(styles);
+
+function DefaultLayout({ children }) {
+  return (
+    <div className={cx('wrapper')}>
+      <Header />
+      <div className={cx('container')}>
+        <Sidebar />
+        <div className={cx('content')}>{children}</div>
+      </div>
+    </div>
+  );
+}
+
+export default DefaultLayout;
+
+*/
+
+trong DefaultLayout.module.scss 
+/*
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 1150px;
+}
+
+*/
+
+làm sang Sidebar tạo file Sidebar.module.scss
+
+trong index.js Sidebar
+/*
+import classNames from 'classnames/bind';
+
+import styles from './Sidebar.module.scss';
+
+const cx = classNames.bind(styles);
+
+function Sidebar() {
+  return <aside className={cx('wrapper')}>
+    <h2>Sidebar</h2>
+  </aside>;
+}
+
+export default Sidebar;
+
+*/
+
+trong Sidebar.module.scss
+/*
+
+*/
