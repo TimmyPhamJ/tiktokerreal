@@ -836,3 +836,165 @@ Thay đổi trong Header.module.scss:
 }
 
 */
+
+__________________________________________
+Xây dựng UI phần Header #2
+
+dùng thư viện tippy để làm khu vực kết quả tìm kiếm: https://github.com/atomiks/tippyjs-react
+cú pháp cài đặt: npm i @tippyjs/react
+để tìm hiểu thêm tippy lên google tìm Tippy react props:https://atomiks.github.io/tippyjs/v5/all-props/
+
+trong index.js của Header:
+/*
+import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
+
+import Tippy from '@tippyjs/react/headless';
+
+import styles from './Header.module.scss';
+
+import images from '~/assets/images';
+import { useEffect, useState } from 'react';
+
+const cx = classNames.bind(styles);
+
+function Header() {
+  const [searchResult, setSearchResult] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchResult([1, 2, 3]);
+    }, 3000);
+  }, []);
+
+  return (
+    <header className={cx('wrapper')}>
+      <div className={cx('inner')}>
+        <div className={cx('logo')}>
+          <img src={images.logo} alt="TikTok" />
+        </div>
+
+        <Tippy
+          interactive
+          visible={searchResult.length > 0}
+          render={(attrs) => (
+            <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+              Kết Quả
+            </div>
+          )}
+        >
+          <div className={cx('search')}>
+            <input placeholder="Search accounts and videos" spellCheck={false} />
+
+            <button className={cx('clear-btn')}>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+
+            <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
+
+            <button className={cx('search-btn')}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
+          </div>
+        </Tippy>
+
+        <div className={cx('actions')}></div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+*/
+
+Tạo 1 coponents nữa chung vói thư viện Layout và GlobalStyle gọi là Popper:
+
+trong file index của Popper:
+/*
+export {default as Wrapper} from './Wrapper'
+*/
+
+trong file Wrapper của Popper:
+/*
+import classNames from 'classnames/bind';
+
+import styles from './Popper.module.scss';
+
+const cx = classNames.bund(styles);
+
+function Wrapper({ children }) {
+  return <div className={cx('wapper')}>{children}</div>;
+}
+
+export default Wrapper;
+
+*/
+Trong phanaf index Header:
+/* 
+import { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
+
+import Tippy from '@tippyjs/react/headless';
+
+import styles from './Header.module.scss';
+
+import images from '~/assets/images';
+
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+
+const cx = classNames.bind(styles);
+
+function Header() {
+  const [searchResult, setSearchResult] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchResult([1, 2, 3]);
+    }, 3000);
+  }, []);
+
+  return (
+    <header className={cx('wrapper')}>
+      <div className={cx('inner')}>
+        <div className={cx('logo')}>
+          <img src={images.logo} alt="TikTok" />
+        </div>
+
+        <Tippy
+          interactive
+          visible={searchResult.length > 0}
+          render={(attrs) => (
+            <PopperWrapper>
+              <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+                Kết Quả
+              </div>
+            </PopperWrapper>
+          )}
+        >
+          <div className={cx('search')}>
+            <input placeholder="Search accounts and videos" spellCheck={false} />
+
+            <button className={cx('clear-btn')}>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+
+            <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
+
+            <button className={cx('search-btn')}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
+          </div>
+        </Tippy>
+
+        <div className={cx('actions')}></div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+
+*/
