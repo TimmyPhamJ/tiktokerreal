@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
-
 import Tippy from '@tippyjs/react/headless';
 
 import styles from './Header.module.scss';
@@ -19,7 +18,7 @@ function Header() {
   useEffect(() => {
     setTimeout(() => {
       setSearchResult([1, 2, 3]);
-    }, 3000);
+    }, 0);
   }, []);
 
   return (
@@ -33,11 +32,9 @@ function Header() {
           interactive
           visible={searchResult.length > 0}
           render={(attrs) => (
-            <PopperWrapper>
-              <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                Kết Quả
-              </div>
-            </PopperWrapper>
+            <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+              <PopperWrapper>Kết Quả</PopperWrapper>
+            </div>
           )}
         >
           <div className={cx('search')}>
