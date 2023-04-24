@@ -644,7 +644,7 @@ trong Sidebar.module.scss
 
 */
 __________________________________________
-Xây dựng UI phần Header #1
+Xây dựng UI phần Header #1 phần header
 
 
 Taọ thư mục asset - images - file index.js và logo.svg.
@@ -838,7 +838,7 @@ Thay đổi trong Header.module.scss:
 */
 
 __________________________________________
-Xây dựng UI phần Header #2
+Xây dựng UI phần Header #2 phần tìm kiếm
 
 dùng thư viện tippy để làm khu vực kết quả tìm kiếm: https://github.com/atomiks/tippyjs-react
 cú pháp cài đặt: npm i @tippyjs/react
@@ -846,16 +846,18 @@ cú pháp cài đặt: npm i @tippyjs/react
 
 trong index.js của Header:
 /*
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
-
 import Tippy from '@tippyjs/react/headless';
 
 import styles from './Header.module.scss';
 
 import images from '~/assets/images';
-import { useEffect, useState } from 'react';
+
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+import AccountItem from '~/components/AccountItem';
 
 const cx = classNames.bind(styles);
 
@@ -864,8 +866,8 @@ function Header() {
 
   useEffect(() => {
     setTimeout(() => {
-      setSearchResult([1, 2, 3]);
-    }, 3000);
+      setSearchResult([/*sau này sẽ gọi api nên giờ ẩn đi*/]);
+    }, 0);
   }, []);
 
   return (
@@ -880,7 +882,13 @@ function Header() {
           visible={searchResult.length > 0}
           render={(attrs) => (
             <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-              Kết Quả
+              <PopperWrapper>
+                <h4 className={cx('search-title')}>Accounts</h4>
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+              </PopperWrapper>
             </div>
           )}
         >
@@ -906,6 +914,7 @@ function Header() {
 }
 
 export default Header;
+
 */
 
 Tạo 1 coponents nữa chung vói thư viện Layout và GlobalStyle gọi là Popper:
@@ -996,5 +1005,391 @@ function Header() {
 }
 
 export default Header;
+
+*/
+
+Trong file Popper.module.scss:
+/*
+.wrapper {
+  width: 100%;
+  max-height: min((100vh - 96px) - 60px, 734px);
+  min-height: 100px;
+  padding-top: 8px;
+  border-radius: 8px;
+  background: rgb(255, 255, 255);
+  box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+}
+
+*/
+
+Tạo thêm 1 thư mục components/AcCountItem
+
+Trong file index.js AcCountItem:
+/*
+import classNames from 'classnames/bind';
+import styles from './AccountItem.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+
+const cx = classNames.bind(styles);
+
+function AccountItem() {
+  return (
+    <div className={cx('wrapper')}>
+      <img
+        className={cx('avatar')}
+        src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/4abd3d07ddea0f1c636aec1bba9cf997~c5_100x100.jpeg?x-expires=1682524800&x-signature=7L6g4kvIdlbeqZBQAkzAKSg4iOA%3D"
+        alt="Roisee"
+      />
+      <div className={cx('info')}>
+        <h4 className={cx('name')}>
+          <span>Roisee</span>
+          <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
+        </h4>
+        <span className={cx('username')}>Hoàng Thị Hằng Phượng</span>
+      </div>
+    </div>
+  );
+}
+
+export default AccountItem;
+
+*/
+
+Trong file Scss AcCountItem:
+/*
+.wrapper {
+  display: flex;
+  align-items: center;
+  padding: 9px 16px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(22, 24, 35, 0.03);
+  }
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+  margin-left: 12px;
+}
+
+.name {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.check {
+  margin-left: 6px;
+  color: rgb(32, 213, 236);
+}
+
+.username {
+  font-size: 1.4rem;
+  color: rgb(22, 24, 35, 0.5);
+}
+*/
+
+____________________________________
+Xây dựng UI phần Header #3 nút nhấn
+
+Vào src/components/Button/index.js & Button.module.scss
+
+Trong Button/index.js:
+/*
+import { Link } from 'react-router-dom';
+
+import classNames from 'classnames/bind';
+import styles from './Button.module.scss';
+
+const cx = classNames.bind(styles);
+
+function Button({
+  to,
+  href,
+  primary = false,
+  outline = false,
+  text = false,
+  rounded = false,
+  disabled = false,
+  small = false,
+  large = false,
+  children,
+  className,
+  leftIcon,
+  rightIcon,
+  onClick,
+  ...passProps
+}) {
+  let Comp = 'button';
+
+  const props = {
+    onClick,
+    ...passProps,
+  };
+
+  //Xóa lắng nghe sự kiện khi nút nhắn không hoạt động
+  if (disabled) {
+    Object.keys(props).forEach((key) => {
+      if (key.startsWith('on') && typeof props[key] === 'function') {
+        delete props[key];
+      }
+    });
+  }
+
+  if (to) {
+    props.to = to;
+    Comp = Link;
+  } else if (href) {
+    props.href = href;
+    Comp = 'a';
+  }
+
+  const classes = cx('wrapper', {
+    [className]: className,
+    primary,
+    outline,
+    text,
+    disabled,
+    rounded,
+    small,
+    large,
+  });
+
+  return (
+    <Comp className={classes} {...props}>
+      {leftIcon && <span className={cx('icon')}>{leftIcon}</span>}
+      <span className={cx('title')}>{children}</span>
+      {rightIcon && <span className={cx('icon')}>{rightIcon}</span>}
+    </Comp>
+  );
+}
+
+export default Button;
+
+*/
+
+Đi vào Layout/components/Header vào file index của nó
+
+Trong Header/index.js:
+/*
+import { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Tippy from '@tippyjs/react/headless';
+
+import styles from './Header.module.scss';
+
+import images from '~/assets/images';
+
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+
+import AccountItem from '~/components/AccountItem';
+
+import Button from '~/components/Button';
+
+const cx = classNames.bind(styles);
+
+function Header() {
+  const [searchResult, setSearchResult] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchResult([
+        /*sau này sẽ gọi api nên giờ ẩn đi*/
+      ]);
+    }, 0);
+  }, []);
+
+  return (
+    <header className={cx('wrapper')}>
+      <div className={cx('inner')}>
+        <div className={cx('logo')}>
+          <img src={images.logo} alt="TikTok" />
+        </div>
+
+        <Tippy
+          interactive
+          visible={searchResult.length > 0}
+          render={(attrs) => (
+            <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+              <PopperWrapper>
+                <h4 className={cx('search-title')}>Accounts</h4>
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+              </PopperWrapper>
+            </div>
+          )}
+        >
+          <div className={cx('search')}>
+            <input placeholder="Search accounts and videos" spellCheck={false} />
+
+            <button className={cx('clear-btn')}>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+
+            <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
+
+            <button className={cx('search-btn')}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
+          </div>
+        </Tippy>
+
+        <div className={cx('actions')}>
+          <Button text>Upload</Button>
+          <Button primary>Log in</Button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+
+*/
+
+Trong Button/Button.module.scss:
+/*
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  padding: 9px 16px;
+  border-radius: 4px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--White);
+  border: 1px solid transparent;
+  user-select: none;
+
+  + .wrapper {
+    margin-left: 8px;
+  }
+  //Disabled
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.icon + .title,
+.title + .icon {
+  margin-left: 8px;
+}
+
+//Button types
+
+.rounded {
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  border-color: rgba(22, 24, 35, 0.12);
+
+  &:hover {
+    border-color: rgba(22, 24, 35, 0.2);
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+}
+
+.primary {
+  color: var(--White);
+  background-color: var(--primary);
+  border-color: var(--primary);
+
+  &:hover {
+    border-color: var(--primary);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
+  }
+}
+
+.outline {
+  color: var(--primary);
+  border-color: currentColor;
+
+  &:hover {
+    border-color: currentColor;
+    background-color: rgba(254, 44, 85, 0.06);
+  }
+}
+
+.text {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+//Button size
+.small {
+  min-width: 88px;
+  padding: 4px 16px;
+}
+
+.large {
+  padding: 14px 16px;
+  min-width: 140px;
+}
+
+*/
+
+Tạo thêm biến GlobalStyle:
+/*
+@import 'normalize.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #fe2c55;
+  --black: #000;
+  --White: #fff;
+  --text-color: #333;
+
+  //Default Layout
+  --default-layout-header-height: 60px;
+  --default-layout-width-content: 1150px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Mitr', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed; //tối ưu để hiển thị font nhanh nhất
+  color: var(--text-color);
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a,
+[href] {
+  color: var(--text-color);
+  text-decoration: none;
+}
 
 */

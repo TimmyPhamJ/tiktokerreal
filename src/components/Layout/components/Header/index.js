@@ -10,6 +10,10 @@ import images from '~/assets/images';
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 
+import AccountItem from '~/components/AccountItem';
+
+import Button from '~/components/Button';
+
 const cx = classNames.bind(styles);
 
 function Header() {
@@ -17,7 +21,9 @@ function Header() {
 
   useEffect(() => {
     setTimeout(() => {
-      setSearchResult([1, 2, 3]);
+      setSearchResult([
+        /*sau này sẽ gọi api nên giờ ẩn đi*/
+      ]);
     }, 0);
   }, []);
 
@@ -33,7 +39,13 @@ function Header() {
           visible={searchResult.length > 0}
           render={(attrs) => (
             <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-              <PopperWrapper>Kết Quả</PopperWrapper>
+              <PopperWrapper>
+                <h4 className={cx('search-title')}>Accounts</h4>
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+              </PopperWrapper>
             </div>
           )}
         >
@@ -52,7 +64,10 @@ function Header() {
           </div>
         </Tippy>
 
-        <div className={cx('actions')}></div>
+        <div className={cx('actions')}>
+          <Button text>Upload</Button>
+          <Button primary>Log in</Button>
+        </div>
       </div>
     </header>
   );
