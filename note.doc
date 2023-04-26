@@ -1708,3 +1708,552 @@ function Wrapper({ children, className }) {
 export default Wrapper;
 
 */
+
+
+______________________________
+Xây dựng UI phần Header #5
+
+Trong components/GlobalStyle/GlobalStyle.module.scss:
+/*
+@import 'normalize.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #fe2c55;
+  --black: #000;
+  --White: #fff;
+  --text-color: #333;
+
+  //Default Layout
+  --default-layout-header-height: 60px;
+  --default-layout-width-content: 1150px;
+  --default-layout-horizontal-spacer: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Mitr', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed; //tối ưu để hiển thị font nhanh nhất
+  color: var(--text-color);
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a,
+[href] {
+  color: var(--text-color);
+  text-decoration: none;
+}
+*/
+
+Vào components/Layout/components/Header.module.scss:
+/*
+.wrapper {
+  --search-border-radius: 92px;
+  --search-height: 46px;
+  --search-top-spacer: 9px;
+  --search-button-width: 52px;
+
+  width: 100%;
+  height: var(--default-layout-header-height, 60px);
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  height: 100%;
+  width: var(--default-layout-width-content);
+  padding: 0 var(--default-layout-horizontal-spacer);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+}
+
+.search,
+.search-result {
+  width: 361px;
+}
+
+.search {
+  position: relative;
+  height: var(--search-height);
+  padding-left: 16px;
+  display: flex;
+  background-color: rgba(22, 24, 35, 0.06);
+  border-radius: var(--search-border-radius);
+  border: 1.5px solid transparent;
+
+  input {
+    flex: 1;
+    height: 100%;
+    color: var(--black);
+    font-size: 1.6rem;
+    caret-color: var(--primary);
+    background-color: transparent;
+  }
+
+  input:not(:placeholder-shown) ~ .search-btn {
+    color: rgba(22, 24, 35, 0.75);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: var(--search-top-spacer);
+    right: var(--search-button-width);
+    height: calc(var(--search-height) - var(--search-top-spacer) * 2);
+    width: 1px;
+    background-color: rgba(22, 24, 35, 0.12);
+  }
+
+  &:focus-within {
+    border-color: rgba(22, 24, 35, 0.2);
+  }
+}
+
+.search-title {
+  padding: 5px 12px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: rgba(22, 24, 35, 0.5);
+}
+
+.clear-btn,
+.loading {
+  position: absolute;
+  right: calc(var(--search-button-width) + 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(22, 24, 35, 0.34);
+}
+
+.search-btn {
+  width: var(--search-button-width);
+  height: 100%;
+  border-top-right-radius: var(--search-border-radius);
+  border-bottom-right-radius: var(--search-border-radius);
+  font-size: 1.8rem;
+  color: rgba(22, 24, 35, 0.34);
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+
+  &:active {
+    background-color: rgba(22, 24, 35, 0.06);
+  }
+}
+
+.more-btn {
+  font-size: 2rem;
+  margin-left: 28px;
+  padding: 4px 8px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+*/
+
+Trong Layout/DefaultLayout/DefaultLayout.module.scss:
+/*
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: var(--default-layout-width-content);
+  padding: 0 var(--default-layout-horizontal-spacer);
+  display: flex;
+}
+
+.content {
+  flex: 1;
+}
+
+*/
+
+trong components/Popper/Menu/Menu.module.scss:
+/*
+//Menu wrapper
+.menu-list {
+  width: 224px;
+
+  //Menu item
+  .menu-item {
+    margin-left: 0;
+  }
+}
+
+.menu-popper {
+  padding-bottom: 8px;
+}
+
+//Menu item
+.menu-item {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 0;
+  font-weight: unset;
+  padding: 11px 16px;
+  line-height: 1.8rem;
+
+  &:hover {
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+}
+*/
+
+Trong Popper/Menu/Header.js
+/*
+import classNames from 'classnames/bind';
+
+import styles from './Menu.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+
+const cx = classNames.bind(styles);
+
+function Header({ title, onBack }) {
+  return (
+    <header className={cx('header')}>
+      <button className={cx('back-btn')} onClick={onBack}>
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </button>
+      <h4 className={cx('header-title')}>{title}</h4>
+    </header>
+  );
+}
+
+export default Header;
+
+*/
+
+Trong Popper/Menu/index.js
+/*
+import Tippy from '@tippyjs/react/headless';
+import classNames from 'classnames/bind';
+
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+import MenuItem from './MenuItem';
+import styles from './Menu.module.scss';
+import Header from './Header';
+import { useState } from 'react';
+
+const cx = classNames.bind(styles);
+
+const defaultFn = () => {};
+
+function Menu({ children, items = [], onChange = defaultFn }) {
+  const [history, setHistory] = useState([{ data: items }]);
+  const current = history[history.length - 1];
+
+  const renderItems = () => {
+    return current.data.map((item, index) => {
+      const isParent = !!item.children;
+
+      return (
+        <MenuItem
+          key={index}
+          data={item}
+          onClick={() => {
+            if (isParent) {
+              setHistory((prev) => [...prev, item.children]);
+            } else {
+              onChange(item);
+            }
+          }}
+        />
+      );
+    });
+  };
+
+  return (
+    <Tippy
+      interactive
+      delay={[0, 700]}
+      placement="bottom-end"
+      render={(attrs) => (
+        <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
+          <PopperWrapper className={cx('menu-popper')}>
+            {history.length > 1 && (
+              <Header
+                title="Language"
+                onBack={() => {
+                  setHistory((prev) => prev.slice(0, prev.length - 1));
+                }}
+              />
+            )}
+            {renderItems()}
+          </PopperWrapper>
+        </div>
+      )}
+    >
+      {children}
+    </Tippy>
+  );
+}
+
+export default Menu;
+
+*/
+
+Trong components/Layout/components/Header/index.js:
+/*
+import { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCircleXmark,
+  faMagnifyingGlass,
+  faSpinner,
+  faEllipsisVertical,
+  faEarthAsia,
+  faCircleQuestion,
+  faKeyboard,
+} from '@fortawesome/free-solid-svg-icons';
+import Tippy from '@tippyjs/react/headless';
+
+import styles from './Header.module.scss';
+
+import images from '~/assets/images';
+
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+
+import AccountItem from '~/components/AccountItem';
+
+import Button from '~/components/Button';
+
+import Menu from '~/components/Popper/Menu';
+
+const cx = classNames.bind(styles);
+
+const MENU_ITEMS = [
+  {
+    icon: <FontAwesomeIcon icon={faEarthAsia} />,
+    title: 'English',
+    children: {
+      title: 'Language',
+      data: [
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+          children: {
+            title: 'Vùng Miềng',
+            data: [
+              {
+                code: 'vin',
+                title: 'Tiếng Việt Bắc',
+              },
+              {
+                code: 'vis',
+                title: 'Tiếng Việt Nam',
+                children: {
+                  title: 'Hướng',
+                  data: [
+                    {
+                      code: 'visw',
+                      title: 'Tiếng Việt Tây',
+                    },
+                    {
+                      code: 'vise',
+                      title: 'Tiếng Việt Đông',
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
+    icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+    title: 'Feedback and Help',
+    to: '/feedback',
+  },
+  {
+    icon: <FontAwesomeIcon icon={faKeyboard} />,
+    title: 'Keyboard Shortcuts',
+  },
+];
+
+function Header() {
+  const [searchResult, setSearchResult] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchResult([
+        /*sau này sẽ gọi api nên giờ ẩn đi*/
+      ]);
+    }, 0);
+  }, []);
+
+  //Handle logic
+  const handleMenuChange = (menuItem) => {
+    switch (menuItem.type) {
+      case 'Vietnamess':
+        //Handle change language
+        break;
+      default:
+    }
+  };
+
+  return (
+    <header className={cx('wrapper')}>
+      <div className={cx('inner')}>
+        <div className={cx('logo')}>
+          <img src={images.logo} alt="TikTok" />
+        </div>
+
+        <Tippy
+          interactive
+          visible={searchResult.length > 0}
+          render={(attrs) => (
+            <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+              <PopperWrapper>
+                <h4 className={cx('search-title')}>Accounts</h4>
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+                <AccountItem />
+              </PopperWrapper>
+            </div>
+          )}
+        >
+          <div className={cx('search')}>
+            <input placeholder="Search accounts and videos" spellCheck={false} />
+
+            <button className={cx('clear-btn')}>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+
+            <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
+
+            <button className={cx('search-btn')}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
+          </div>
+        </Tippy>
+
+        <div className={cx('actions')}>
+          <Button text>Upload</Button>
+          <Button primary>Log in</Button>
+
+          <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
+            <button className={cx('more-btn')}>
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </button>
+          </Menu>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+
+*/
+
+Trong components/Propper/Menu/MenuItem.js
+/*
+import Button from '~/components/Button';
+import classNames from 'classnames/bind';
+import styles from './Menu.module.scss';
+
+const cx = classNames.bind(styles);
+
+function MenuItem({ data, onClick }) {
+  return (
+    <Button className={cx('menu-item')} leftIcon={data.icon} to={data.to} onClick={onClick}>
+      {data.title}
+    </Button>
+  );
+}
+
+export default MenuItem;
+
+*/
+
+Trong components/Popper/Menu/Menu.module.scss
+/*
+//Menu wrapper
+.menu-list {
+  width: 224px;
+
+  //Menu item
+  .menu-item {
+    margin-left: 0;
+  }
+}
+
+.menu-popper {
+  padding-bottom: 8px;
+}
+
+//Menu item
+.menu-item {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 0;
+  font-weight: unset;
+  padding: 11px 16px;
+  line-height: 1.8rem;
+
+  &:hover {
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+}
+
+//Header language menu
+.header {
+  position: relative;
+  height: 50px;
+  margin-top: -8px;
+}
+
+.back-btn {
+  width: 50px;
+  height: 100%;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.header-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+*/

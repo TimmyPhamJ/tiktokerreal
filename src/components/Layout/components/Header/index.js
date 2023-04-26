@@ -30,6 +30,47 @@ const MENU_ITEMS = [
   {
     icon: <FontAwesomeIcon icon={faEarthAsia} />,
     title: 'English',
+    children: {
+      title: 'Language',
+      data: [
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+          children: {
+            title: 'Vùng Miềng',
+            data: [
+              {
+                code: 'vin',
+                title: 'Tiếng Việt Bắc',
+              },
+              {
+                code: 'vis',
+                title: 'Tiếng Việt Nam',
+                children: {
+                  title: 'Hướng',
+                  data: [
+                    {
+                      code: 'visw',
+                      title: 'Tiếng Việt Tây',
+                    },
+                    {
+                      code: 'vise',
+                      title: 'Tiếng Việt Đông',
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
   },
   {
     icon: <FontAwesomeIcon icon={faCircleQuestion} />,
@@ -52,6 +93,16 @@ function Header() {
       ]);
     }, 0);
   }, []);
+
+  //Handle logic
+  const handleMenuChange = (menuItem) => {
+    switch (menuItem.type) {
+      case 'Vietnamess':
+        //Handle change language
+        break;
+      default:
+    }
+  };
 
   return (
     <header className={cx('wrapper')}>
@@ -94,7 +145,7 @@ function Header() {
           <Button text>Upload</Button>
           <Button primary>Log in</Button>
 
-          <Menu items={MENU_ITEMS}>
+          <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
             <button className={cx('more-btn')}>
               <FontAwesomeIcon icon={faEllipsisVertical} />
             </button>
