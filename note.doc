@@ -1518,15 +1518,193 @@ Tạo Popper/Menu/index.js
 
 Trong Menu/index.js:
 /*
+import Tippy from '@tippyjs/react/headless';
+import classNames from 'classnames/bind';
+
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+import MenuItem from './MenuItem';
+import styles from './Menu.module.scss';
+
+const cx = classNames.bind(styles);
+
+function Menu({ children, items = [] }) {
+  const renderItems = () => {
+    return items.map((item, index) => <MenuItem key={index} data={item} />);
+  };
+
+  return (
+    <Tippy
+      interactive
+      delay={[0, 700]}
+      placement="bottom-end"
+      render={(attrs) => (
+        <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
+          <PopperWrapper className={cx('menu-popper')}>{renderItems()}</PopperWrapper>
+        </div>
+      )}
+    >
+      {children}
+    </Tippy>
+  );
+}
+
+export default Menu;
 
 */
 
 Trong Menu/Menu.module.scss:
 /*
+//Menu wrapper
+.menu-list {
+  width: 224px;
+
+  //Menu item
+  .menu-item {
+    margin-left: 0;
+  }
+}
+
+.menu-popper {
+  padding-bottom: 8px;
+}
+
+//Menu item
+.menu-item {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 0;
+  font-weight: unset;
+  padding: 11px 16px;
+
+  &:hover {
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+}
 
 */
 
 Trong Menu/MenuItem.js
 /*
+import Button from '~/components/Button';
+import classNames from 'classnames/bind';
+import styles from './Menu.module.scss';
+
+const cx = classNames.bind(styles);
+
+function MenuItem({ data }) {
+  return (
+    <Button className={cx('menu-item')} leftIcon={data.icon} to={data.to}>
+      {data.title}
+    </Button>
+  );
+}
+
+export default MenuItem;
+
+*/
+
+Trong Button/Buttom.module.scss
+/*
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  padding: 9px 16px;
+  border-radius: 4px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--White);
+  border: 1px solid transparent;
+  user-select: none;
+
+  + .wrapper {
+    margin-left: 8px;
+  }
+  //Disabled
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.icon + .title,
+.title + .icon {
+  margin-left: 8px;
+}
+
+.icon {
+  display: inline-block;
+  width: 24px;
+  text-align: center;
+}
+
+//Button types
+
+.rounded {
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  border-color: rgba(22, 24, 35, 0.12);
+
+  &:hover {
+    border-color: rgba(22, 24, 35, 0.2);
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+}
+
+.primary {
+  color: var(--White);
+  background-color: var(--primary);
+  border-color: var(--primary);
+
+  &:hover {
+    border-color: var(--primary);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
+  }
+}
+
+.outline {
+  color: var(--primary);
+  border-color: currentColor;
+
+  &:hover {
+    border-color: currentColor;
+    background-color: rgba(254, 44, 85, 0.06);
+  }
+}
+
+.text {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+//Button size
+.small {
+  min-width: 88px;
+  padding: 4px 16px;
+}
+
+.large {
+  padding: 14px 16px;
+  min-width: 140px;
+}
+*/
+
+Trong file Popper/Wrapper.js
+/*
+import classNames from 'classnames/bind';
+
+import styles from './Popper.module.scss';
+
+const cx = classNames.bind(styles);
+
+function Wrapper({ children, className }) {
+  return <div className={cx('wrapper', className)}>{children}</div>;
+}
+
+export default Wrapper;
 
 */
