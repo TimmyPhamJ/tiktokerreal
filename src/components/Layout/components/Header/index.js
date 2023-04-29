@@ -9,10 +9,14 @@ import {
   faEarthAsia,
   faCircleQuestion,
   faKeyboard,
-  faUpload,
   faCloudUpload,
   faMessage,
+  faUser,
+  faCoins,
+  faGear,
+  faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
+import 'tippy.js/dist/tippy.css';
 
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -92,6 +96,8 @@ const MENU_ITEMS = [
 function Header() {
   const [searchResult, setSearchResult] = useState([]);
 
+  const currentUser = true;
+
   useEffect(() => {
     setTimeout(() => {
       setSearchResult([
@@ -110,7 +116,30 @@ function Header() {
     }
   };
 
-  const currentUser = true;
+  const userMenu = [
+    {
+      icon: <FontAwesomeIcon icon={faUser} />,
+      title: 'View profile',
+      to: '/@thanhmeo.18',
+    },
+    {
+      icon: <FontAwesomeIcon icon={faCoins} />,
+      title: 'Get coins',
+      to: '/coins',
+    },
+    {
+      icon: <FontAwesomeIcon icon={faGear} />,
+      title: 'Setting',
+      to: '/setting',
+    },
+    ...MENU_ITEMS,
+    {
+      icon: <FontAwesomeIcon icon={faSignOut} />,
+      title: 'Log out',
+      to: '/logout',
+      separate: true,
+    },
+  ];
 
   return (
     <header className={cx('wrapper')}>
@@ -152,14 +181,16 @@ function Header() {
         <div className={cx('actions')}>
           {currentUser ? (
             <>
-              <Tippy content="Upload Video" placement="bottom">
+              <Tippy delay={[0, 200]} content="Upload Video" placement="bottom">
                 <button className={cx('action-btn')}>
                   <FontAwesomeIcon icon={faCloudUpload} />
                 </button>
               </Tippy>
-              <button className={cx('action-btn')}>
-                <FontAwesomeIcon icon={faMessage} />
-              </button>
+              <Tippy delay={[0, 200]} content="Inbox" placement="bottom">
+                <button className={cx('action-btn')}>
+                  <FontAwesomeIcon icon={faMessage} />
+                </button>
+              </Tippy>
             </>
           ) : (
             <>
@@ -168,11 +199,15 @@ function Header() {
             </>
           )}
 
-          <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
+          <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
             {currentUser ? (
-              <img src="images.avatar" className={cx('user-avatar')} alt="Minh Tuấn Phạm" />
+              <img
+                src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/33fd8341eec3c69dc34972b27738b860~c5_100x100.jpeg?x-expires=1682920800&x-signature=V%2B%2FvdiQnIJYhg%2Bjq7Nt3zij%2BGcQ%3D"
+                className={cx('user-avatar')}
+                alt=""
+              />
             ) : (
-              <button className={cx('more-btn')}>
+              <button trigger="click" className={cx('more-btn')}>
                 <FontAwesomeIcon icon={faEllipsisVertical} />
               </button>
             )}
