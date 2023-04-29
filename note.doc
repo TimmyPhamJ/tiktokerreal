@@ -3693,3 +3693,15 @@ Trong asset/images/Image.module.scss:
 }
 
 */
+______________________________
+Xây dựng Logic phần Header #1
+
+Trong components/Layout/components/Header/index.js:
+/*
+
+*/
+
+Trong components/AcCountItem/index.js:
+/*
+
+*/
