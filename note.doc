@@ -4476,3 +4476,201 @@ function Search() {
 export default Search;
 
 */
+
+_________________________
+Tìm hiểu và sử dụng thư viện Axios or superagent
+
+Giúp gọi API từ trình duyệt hoặc từ Node.js
+
+Có 2 cách gọi Api khi viết js trên frontend
+//XMLHttpReques
+//fetch
+
+cài đặt axios: npm install axios
+
+Trong components/Layout/components/Search/index.js:
+/*
+import { useEffect, useState, useRef } from 'react';
+import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HeadlessTippy from '@tippyjs/react/headless';
+import classNames from 'classnames/bind';
+
+import * as searchService from '~/apiService/searchServices';
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+import AccountItem from '~/components/AccountItem';
+import { SearchIcon } from '~/components/Icons';
+import { useDebounce } from '~/hook';
+import styles from './Search.module.scss';
+
+const cx = classNames.bind(styles);
+
+function Search() {
+  const [searchValue, setSearchValue] = useState('');
+
+  const [searchResult, setSearchResult] = useState([]);
+
+  const [showResult, setshowResult] = useState(true);
+  const [loading, reloading] = useState(false);
+
+  const debounced = useDebounce(searchValue, 800);
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (!debounced.trim()) {
+      setSearchResult([]);
+      return;
+    }
+
+    const fetchApi = async () => {
+      reloading(true);
+
+      const result = await searchService.search(debounced);
+      setSearchResult(result);
+
+      reloading(false);
+    };
+
+    fetchApi();
+
+    /*
+    reloading(true);
+
+    const fetchApi = async () => {
+      try {
+        const res = await request.get('users/search', {
+          params: {
+            q: debounced,
+            type: 'less',
+          },
+        });
+        setSearchResult(res.data);
+        reloading(false);
+      } catch (error) {
+        reloading(false);
+      }
+    };
+
+    fetchApi();*/
+  }, [debounced]);
+
+  /*fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
+      .then((res) => res.json())
+      .then((res) => {
+        setSearchResult(res.data);
+        reloading(false);
+      })
+      .catch(() => {
+        reloading(false);
+      });
+  }, [debounced]);*/
+
+  /*request
+      .get('users/search', {
+        params: {
+          q: debounced,
+          type: 'less',
+        },
+      })
+      .then((res) => {
+        setSearchResult(res.data);
+        reloading(false);
+      })
+      .catch(() => {
+        reloading(false);
+      });
+  }, [debounced]);*/
+
+  const handleClear = () => {
+    setSearchValue('');
+    setSearchResult([]);
+    inputRef.current.focus();
+  };
+
+  const handleHideResult = () => {
+    setshowResult(false);
+  };
+
+  return (
+    <HeadlessTippy
+      interactive
+      visible={showResult && searchResult.length > 0}
+      render={(attrs) => (
+        <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+          <PopperWrapper>
+            <h4 className={cx('search-title')}>Accounts</h4>
+            {searchResult.map((result) => (
+              <AccountItem key={result.id} data={result} />
+            ))}
+          </PopperWrapper>
+        </div>
+      )}
+      onClickOutside={handleHideResult}
+    >
+      <div className={cx('search')}>
+        <input
+          ref={inputRef}
+          value={searchValue}
+          placeholder="Search accounts and videos"
+          spellCheck={false}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onFocus={() => setshowResult(true)}
+        />
+
+        {!!searchValue && !loading && (
+          <button className={cx('clear-btn')} onClick={handleClear}>
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </button>
+        )}
+
+        {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
+
+        <button className={cx('search-btn')}>
+          <SearchIcon />
+        </button>
+      </div>
+    </HeadlessTippy>
+  );
+}
+
+export default Search;
+
+*/
+
+Trong src/utils/request.js:
+/*
+import axios from 'axios';
+
+const request = axios.create({
+  baseURL: 'https://tiktok.fullstack.edu.vn/api/',
+});
+
+export const get = async (path, option = {}) => {
+  const response = await request.get(path, option);
+  return response.data;
+};
+
+export default request;
+
+*/
+
+Trong src/apiService/searchServices.js
+/*
+import * as request from '~/utils/request';
+
+export const search = async (q, type = 'less') => {
+  try {
+    const res = await request.get('users/search', {
+      params: {
+        q,
+        type,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+*/

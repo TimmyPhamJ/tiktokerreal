@@ -3,6 +3,8 @@ import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
+
+import * as searchService from '~/apiService/searchServices';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/Icons';
@@ -29,9 +31,39 @@ function Search() {
       return;
     }
 
+    const fetchApi = async () => {
+      reloading(true);
+
+      const result = await searchService.search(debounced);
+      setSearchResult(result);
+
+      reloading(false);
+    };
+
+    fetchApi();
+
+    /*
     reloading(true);
 
-    fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
+    const fetchApi = async () => {
+      try {
+        const res = await request.get('users/search', {
+          params: {
+            q: debounced,
+            type: 'less',
+          },
+        });
+        setSearchResult(res.data);
+        reloading(false);
+      } catch (error) {
+        reloading(false);
+      }
+    };
+
+    fetchApi();*/
+  }, [debounced]);
+
+  /*fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
       .then((res) => res.json())
       .then((res) => {
         setSearchResult(res.data);
@@ -40,7 +72,23 @@ function Search() {
       .catch(() => {
         reloading(false);
       });
-  }, [debounced]);
+  }, [debounced]);*/
+
+  /*request
+      .get('users/search', {
+        params: {
+          q: debounced,
+          type: 'less',
+        },
+      })
+      .then((res) => {
+        setSearchResult(res.data);
+        reloading(false);
+      })
+      .catch(() => {
+        reloading(false);
+      });
+  }, [debounced]);*/
 
   const handleClear = () => {
     setSearchValue('');
