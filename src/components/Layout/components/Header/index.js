@@ -52,22 +52,109 @@ const MENU_ITEMS = [
               {
                 code: 'vis',
                 title: 'Tiếng Việt Nam',
-                children: {
-                  title: 'Hướng',
-                  data: [
-                    {
-                      code: 'visw',
-                      title: 'Tiếng Việt Tây',
-                    },
-                    {
-                      code: 'vise',
-                      title: 'Tiếng Việt Đông',
-                    },
-                  ],
-                },
               },
             ],
           },
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
         },
       ],
     },

@@ -5298,3 +5298,41 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
 export default Menu;
 
 */
+
+_________________________
+Sửa lỗi và hoàn thiện phần Header #2 
+
+trong components/Layout/components/Header/index.js
+/*
+
+*/
+
+trong components/Layout/components/Header/Header.module.scss:
+/*
+
+*/
+
+Trong components/Layout/DefaultLayout.module.Scss:
+/*
+
+*/
+
+Trong pages/Home/index.js
+/*
+
+*/
+
+Trong components/Propper/Menu/index.js
+/*
+
+*/
+
+Trong components/Propper/Menu/Menu.module.scss
+/*
+
+*/
+
+Trong components/Propper/Popper.module.scss
+/*
+
+*/
