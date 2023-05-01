@@ -5304,35 +5304,911 @@ Sửa lỗi và hoàn thiện phần Header #2
 
 trong components/Layout/components/Header/index.js
 /*
+import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faEllipsisVertical,
+  faEarthAsia,
+  faCircleQuestion,
+  faKeyboard,
+  faUser,
+  faCoins,
+  faGear,
+  faSignOut,
+} from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import 'tippy.js/dist/tippy.css';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+
+import routesConfig from '~/config/routes';
+import styles from './Header.module.scss';
+import images from '~/assets/images';
+import Button from '~/components/Button';
+import Menu from '~/components/Popper/Menu';
+import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
+import Image from '~/components/Image';
+import Search from '../Search';
+
+const cx = classNames.bind(styles);
+
+const MENU_ITEMS = [
+  {
+    icon: <FontAwesomeIcon icon={faEarthAsia} />,
+    title: 'English',
+    children: {
+      title: 'Language',
+      data: [
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+          children: {
+            title: 'Vùng Miềng',
+            data: [
+              {
+                code: 'vin',
+                title: 'Tiếng Việt Bắc',
+              },
+              {
+                code: 'vis',
+                title: 'Tiếng Việt Nam',
+              },
+            ],
+          },
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+        {
+          type: 'tiếng nhật',
+          code: 'JP',
+          title: 'Japaness',
+        },
+        {
+          type: 'tiếng trung',
+          code: 'cn',
+          title: 'Tàu Khựa',
+        },
+        {
+          type: 'tiếng anh',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'Vietnamess',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+      ],
+    },
+  },
+  {
+    icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+    title: 'Feedback and Help',
+    to: '/feedback',
+  },
+  {
+    icon: <FontAwesomeIcon icon={faKeyboard} />,
+    title: 'Keyboard Shortcuts',
+  },
+];
+
+function Header() {
+  const currentUser = true;
+
+  //Handle logic
+  const handleMenuChange = (menuItem) => {
+    switch (menuItem.type) {
+      case 'Vietnamess':
+        //Handle change language
+        break;
+      default:
+    }
+  };
+
+  const userMenu = [
+    {
+      icon: <FontAwesomeIcon icon={faUser} />,
+      title: 'View profile',
+      to: '/@thanhmeo.18',
+    },
+    {
+      icon: <FontAwesomeIcon icon={faCoins} />,
+      title: 'Get coins',
+      to: '/coins',
+    },
+    {
+      icon: <FontAwesomeIcon icon={faGear} />,
+      title: 'Setting',
+      to: '/setting',
+    },
+    ...MENU_ITEMS,
+    {
+      icon: <FontAwesomeIcon icon={faSignOut} />,
+      title: 'Log out',
+      to: '/logout',
+      separate: true,
+    },
+  ];
+
+  return (
+    <header className={cx('wrapper')}>
+      <div className={cx('inner')}>
+        <Link to={routesConfig.home} className={cx('logo-link')}>
+          <img src={images.logo} alt="TikTok" />
+        </Link>
+
+        <Search />
+
+        <div className={cx('actions')}>
+          {currentUser ? (
+            <>
+              <Tippy delay={[0, 200]} content="Upload Video" placement="bottom">
+                <button className={cx('action-btn')}>
+                  <UploadIcon />
+                </button>
+              </Tippy>
+              <Tippy delay={[0, 200]} content="Message" placement="bottom">
+                <button className={cx('action-btn')}>
+                  <MessageIcon />
+                </button>
+              </Tippy>
+              <Tippy delay={[0, 200]} content="Upload Video" placement="bottom">
+                <button className={cx('action-btn')}>
+                  <InboxIcon />
+                </button>
+              </Tippy>
+            </>
+          ) : (
+            <>
+              <Button text>Upload</Button>
+              <Button primary>Log in</Button>
+            </>
+          )}
+
+          <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+            {currentUser ? (
+              <Image
+                src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/33fd8341eec3c69dc34972b27738b860~c5_100x100.jpeg?x-expires=1682920800&x-signature=V%2B%2FvdiQnIJYhg%2Bjq7Nt3zij%2BGcQ%3D"
+                className={cx('user-avatar')}
+                alt="ThaoHentai"
+                //fallback="http://files.fullstack.edu.vn/user_avatars/623b4b2d95cec.png"
+              />
+            ) : (
+              <button trigger="click" className={cx('more-btn')}>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </button>
+            )}
+          </Menu>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
 
 */
 
 trong components/Layout/components/Header/Header.module.scss:
 /*
+.wrapper {
+  --search-border-radius: 92px;
+  --search-height: 46px;
+  --search-top-spacer: 9px;
+  --search-button-width: 52px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: var(--default-layout-header-height);
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+  background-color: var(--White);
+}
+
+.inner {
+  height: 100%;
+  width: var(--default-layout-width-content);
+  padding: 0 var(--default-layout-horizontal-spacer);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-link {
+  display: flex;
+}
+
+//Actions
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.more-btn {
+  font-size: 2rem;
+  margin-left: 28px;
+  padding: 4px 8px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.action-btn {
+  font-size: 2.2rem;
+  color: #161823;
+  background-color: transparent;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: 12px;
+  cursor: pointer;
+}
 
 */
 
 Trong components/Layout/DefaultLayout.module.Scss:
 /*
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: var(--default-layout-width-content);
+  padding: 0 var(--default-layout-horizontal-spacer);
+  margin-top: var(--default-layout-header-height);
+  display: flex;
+}
+
+.content {
+  flex: 1;
+}
 
 */
 
 Trong pages/Home/index.js
 /*
+function Home() {
+  return <h2 style={{ height: 2000 }}>Home Page</h2>;
+}
+
+export default Home;
 
 */
 
 Trong components/Propper/Menu/index.js
 /*
+import Tippy from '@tippyjs/react/headless';
+import classNames from 'classnames/bind';
+
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+import MenuItem from './MenuItem';
+import styles from './Menu.module.scss';
+import Header from './Header';
+import { useState } from 'react';
+
+const cx = classNames.bind(styles);
+
+const defaultFn = () => {};
+
+function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn }) {
+  const [history, setHistory] = useState([{ data: items }]);
+  const current = history[history.length - 1];
+
+  const renderItems = () => {
+    return current.data.map((item, index) => {
+      const isParent = !!item.children;
+
+      return (
+        <MenuItem
+          key={index}
+          data={item}
+          onClick={() => {
+            if (isParent) {
+              setHistory((prev) => [...prev, item.children]);
+            } else {
+              onChange(item);
+            }
+          }}
+        />
+      );
+    });
+  };
+
+  return (
+    <Tippy
+      interactive
+      delay={[0, 700]}
+      offset={[12, 8]}
+      hideOnClick={hideOnClick}
+      placement="bottom-end"
+      render={(attrs) => (
+        <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
+          <PopperWrapper className={cx('menu-popper')}>
+            {history.length > 1 && (
+              <Header
+                title="Language"
+                onBack={() => {
+                  setHistory((prev) => prev.slice(0, prev.length - 1));
+                }}
+              />
+            )}
+            <div className={cx('menu-body')}>{renderItems()}</div>
+          </PopperWrapper>
+        </div>
+      )}
+      onHide={() => setHistory((prev) => prev.slice(0, 1))}
+    >
+      {children}
+    </Tippy>
+  );
+}
+
+export default Menu;
 
 */
 
 Trong components/Propper/Menu/Menu.module.scss
 /*
+//Menu wrapper
+.menu-list {
+  width: 224px;
+
+  //Menu item
+  .menu-item {
+    margin-left: 0;
+  }
+}
+
+.menu-popper {
+  padding-bottom: 8px;
+}
+
+.menu-body {
+  overflow-y: auto;
+}
+
+//Menu item
+.menu-item {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 0;
+  font-weight: 600;
+  padding: 11px 16px;
+  line-height: 1.8rem;
+
+  &.separate {
+    border-top: 1px solid rgba(22, 24, 35, 0.12);
+  }
+  s &:hover {
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+}
+
+//Header language menu
+.header {
+  position: relative;
+  flex-shrink: 0;
+  height: 50px;
+  margin-top: -8px;
+}
+
+.back-btn {
+  width: 50px;
+  height: 100%;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.header-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 */
 
 Trong components/Propper/Popper.module.scss
 /*
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: min((100vh - 96px) - 60px, 734px);
+  min-height: 100px;
+  padding-top: 8px;
+  border-radius: 8px;
+  background: rgb(255, 255, 255);
+  box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+}
+
+*/
+
+Trong components/GlobalStyle/GlobalStyle.module.scss:
+/*
+@import 'normalize.css';
+
+:root {
+  --primary: #fe2c55;
+  --black: #000;
+  --White: #fff;
+  --text-color: #161823;
+
+  --font-family: 'ProximaNova', 'SofiaPro', sans-serif;
+
+  //Default Layout
+  --default-layout-header-height: 60px;
+  --default-layout-width-content: 1150px;
+  --default-layout-horizontal-spacer: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed; //tối ưu để hiển thị font nhanh nhất
+  color: var(--text-color);
+  overflow-y: overlay;
+}
+
+//Scrollbar CSS
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(22, 24, 35, 0.06);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a,
+[href] {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+//Fonts emmbeded
+@font-face {
+  font-family: ProximaNova;
+  src: url('/assets/fonts/Proxima-Nova-Regular.woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: ProximaNova;
+  src: url('/assets/fonts/ProximaNova-Semibold.woff2');
+  font-weight: 600;
+}
+@font-face {
+  font-family: SofiaPro;
+  src: url('/assets/fonts/sofiapro-semibold.otf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: ProximaNova;
+  src: url('/assets/fonts/Proxima-Nova-Bold.woff2');
+  font-weight: 700;
+}
+@font-face {
+  font-family: SofiaPro;
+  src: url('/assets/fonts/sofiapro-bold.woff2');
+  font-weight: 700;
+}
+
+// Custom tippy tooltip
+body {
+  .tippy-box {
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    background-color: rgba(84, 84, 84, 0.92);
+  }
+
+  .tippy-arrow {
+    color: rgba(84, 84, 84, 0.92);
+  }
+
+  .tippy-content {
+    padding: 8px 9px;
+  }
+
+  .tippy-box[data-placement^='bottom'] > .tippy-arrow,
+  before {
+    top: -1px;
+  }
+}
+
+*/
+
+Trong file public/index.html
+/*
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Tiktok - Make your day</title>
+  </head>
+  <body>z`
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
+
+*/
+
+Trong components/Layout/components/Search/index.js:
+/*
+import { useEffect, useState, useRef } from 'react';
+import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HeadlessTippy from '@tippyjs/react/headless';
+import classNames from 'classnames/bind';
+
+import * as searchService from '~/apiService/searchServices';
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+import AccountItem from '~/components/AccountItem';
+import { SearchIcon } from '~/components/Icons';
+import { useDebounce } from '~/hook';
+import styles from './Search.module.scss';
+
+const cx = classNames.bind(styles);
+
+function Search() {
+  const [searchValue, setSearchValue] = useState('');
+
+  const [searchResult, setSearchResult] = useState([]);
+
+  const [showResult, setshowResult] = useState(true);
+  const [loading, reloading] = useState(false);
+
+  const debounced = useDebounce(searchValue, 800);
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (!debounced.trim()) {
+      setSearchResult([]);
+      return;
+    }
+
+    const fetchApi = async () => {
+      reloading(true);
+
+      const result = await searchService.search(debounced);
+      setSearchResult(result);
+
+      reloading(false);
+    };
+
+    fetchApi();
+
+    /*
+    reloading(true);
+
+    const fetchApi = async () => {
+      try {
+        const res = await request.get('users/search', {
+          params: {
+            q: debounced,
+            type: 'less',
+          },
+        });
+        setSearchResult(res.data);
+        reloading(false);
+      } catch (error) {
+        reloading(false);
+      }
+    };
+
+    fetchApi();*/
+  }, [debounced]);
+
+  /*fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
+      .then((res) => res.json())
+      .then((res) => {
+        setSearchResult(res.data);
+        reloading(false);
+      })
+      .catch(() => {
+        reloading(false);
+      });
+  }, [debounced]);*/
+
+  /*request
+      .get('users/search', {
+        params: {
+          q: debounced,
+          type: 'less',
+        },
+      })
+      .then((res) => {
+        setSearchResult(res.data);
+        reloading(false);
+      })
+      .catch(() => {
+        reloading(false);
+      });
+  }, [debounced]);*/
+
+  const handleClear = () => {
+    setSearchValue('');
+    setSearchResult([]);
+    inputRef.current.focus();
+  };
+
+  const handleHideResult = () => {
+    setshowResult(false);
+  };
+
+  const handleChange = (e) => {
+    const searchValue = e.target.value;
+
+    if (!searchValue.startsWith(' ')) {
+      setSearchValue(searchValue);
+    }
+  };
+
+  return (
+    //Using a wrapper <div> or <span> tag around the reference element solves this by creating a new parentNode context.
+    <div>
+      <HeadlessTippy
+        interactive
+        visible={showResult && searchResult.length > 0}
+        render={(attrs) => (
+          <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+            <PopperWrapper>
+              <h4 className={cx('search-title')}>Accounts</h4>
+              {searchResult.map((result) => (
+                <AccountItem key={result.id} data={result} />
+              ))}
+            </PopperWrapper>
+          </div>
+        )}
+        onClickOutside={handleHideResult}
+      >
+        <div className={cx('search')}>
+          <input
+            ref={inputRef}
+            value={searchValue}
+            placeholder="Search accounts and videos"
+            spellCheck={false}
+            onChange={handleChange}
+            onFocus={() => setshowResult(true)}
+          />
+
+          {!!searchValue && !loading && (
+            <button className={cx('clear-btn')} onClick={handleClear}>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+          )}
+
+          {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
+
+          <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
+            <SearchIcon />
+          </button>
+        </div>
+      </HeadlessTippy>
+    </div>
+  );
+}
+
+export default Search;
+
+*/
+
+_________________________
+Tái cấu trúc và tối ưu code #1
+- apiService -> services
+- src/components/Layout -> src/layouts
+- routes config
+- Tạo file env
+
+trong src/config/index.js:
+/*
+import routes from './routes';
+
+const config = {
+  routes,
+};
+export default config;
+
+*/
+
+trong src/routes/index.js:
+/*
+import config from '~/config';
+
+//Layout
+import { HeaderOnly } from '~/layouts';
+
+//Pages
+import Home from '~/pages/Home';
+import Following from '~/pages/Following';
+import Profile from '~/pages/Profile';
+import Upload from '~/pages/Upload';
+import Search from '~/pages/Search';
+
+const publicRoutes = [
+  { path: config.routes.home, component: Home },
+  { path: config.routes.following, component: Following },
+  { path: config.routes.profile, component: Profile },
+  { path: config.routes.upload, component: Upload, layout: HeaderOnly },
+  { path: config.routes.search, component: Search, layout: null },
+];
+
+const privateRoutes = [];
+
+export { publicRoutes, privateRoutes };
+
+*/
+
+TRong thư mục gốc tạo file:
+.env.development
+/*
+REACT_APP_BASE_URL= https://tiktok.fullstack.edu.vn/api/
+*/
+
+trong utils/httpRequest.js
+/*
+import axios from 'axios';
+
+const httpRequest = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
+
+export const get = async (path, option = {}) => {
+  const response = await httpRequest.get(path, option);
+  return response.data;
+};
+
+export default httpRequest;
 
 */
