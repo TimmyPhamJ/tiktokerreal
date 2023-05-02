@@ -6594,3 +6594,6 @@ DefaultLayout.propTypes = {
 export default DefaultLayout;
 
 */
+___________________
+Tối Ưu file index trong dự án 
+đổi tên file trung w thư mục và thêm 1 file index để export default ra
