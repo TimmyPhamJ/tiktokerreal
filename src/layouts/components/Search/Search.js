@@ -18,15 +18,15 @@ function Search() {
 
   const [searchResult, setSearchResult] = useState([]);
 
-  const [showResult, setshowResult] = useState(true);
+  const [showResult, setshowResult] = useState(false);
   const [loading, reloading] = useState(false);
 
-  const debounced = useDebounce(searchValue, 800);
+  const debouncedValue = useDebounce(searchValue, 800);
 
   const inputRef = useRef();
 
   useEffect(() => {
-    if (!debounced.trim()) {
+    if (!debouncedValue.trim()) {
       setSearchResult([]);
       return;
     }
@@ -34,7 +34,7 @@ function Search() {
     const fetchApi = async () => {
       reloading(true);
 
-      const result = await searchService.search(debounced);
+      const result = await searchService.search(debouncedValue);
       setSearchResult(result);
 
       reloading(false);
@@ -49,7 +49,7 @@ function Search() {
       try {
         const res = await request.get('users/search', {
           params: {
-            q: debounced,
+            q: debouncedValue,
             type: 'less',
           },
         });
@@ -61,9 +61,9 @@ function Search() {
     };
 
     fetchApi();*/
-  }, [debounced]);
+  }, [debouncedValue]);
 
-  /*fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
+  /*fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debouncedValue)}&type=less`)
       .then((res) => res.json())
       .then((res) => {
         setSearchResult(res.data);
@@ -72,12 +72,12 @@ function Search() {
       .catch(() => {
         reloading(false);
       });
-  }, [debounced]);*/
+  }, [debouncedValue]);*/
 
   /*request
       .get('users/search', {
         params: {
-          q: debounced,
+          q: debouncedValue,
           type: 'less',
         },
       })
@@ -88,7 +88,7 @@ function Search() {
       .catch(() => {
         reloading(false);
       });
-  }, [debounced]);*/
+  }, [debouncedValue]);*/
 
   const handleClear = () => {
     setSearchValue('');
