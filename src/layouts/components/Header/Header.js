@@ -246,7 +246,7 @@ function Header() {
           <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
             {currentUser ? (
               <Image
-                src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/33fd8341eec3c69dc34972b27738b860~c5_100x100.jpeg?x-expires=1682920800&x-signature=V%2B%2FvdiQnIJYhg%2Bjq7Nt3zij%2BGcQ%3D"
+                src="https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tiktok-obj/1644797333016577.jpeg?x-expires=1683295200&x-signature=fKrBqrokUFLlRpIGQiVNsEI61L0%3D"
                 className={cx('user-avatar')}
                 alt="ThaoHentai"
                 //fallback="http://files.fullstack.edu.vn/user_avatars/623b4b2d95cec.png"
